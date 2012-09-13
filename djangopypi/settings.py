@@ -106,8 +106,8 @@ if not hasattr(settings,'DJANGOPYPI_XMLRPC_COMMANDS'):
         'package_releases': xmlrpc.package_releases,
         'release_urls': xmlrpc.release_urls,
         'release_data': xmlrpc.release_data,
+        'changelog': xmlrpc.changelog,
         #'search': xmlrpc.search, Not done yet
-        #'changelog': xmlrpc.changelog, Not done yet
         #'ratings': xmlrpc.ratings, Not done yet
     }
 

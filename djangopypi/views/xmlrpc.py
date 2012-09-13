@@ -1,4 +1,4 @@
-import xmlrpclib
+import xmlrpclib, calendar, datetime
 
 from django.conf import settings
 from django.http import HttpResponseNotAllowed, HttpResponse
@@ -94,6 +94,21 @@ def release_data(request, package_name, version):
     
     return XMLRPCResponse(params=(output,))
 
+
+def changelog(request, since):
+    output = []
+    releases = Release.objects.filter(created__gte=datetime.datetime.fromtimestamp(since))
+    for release in releases:
+        output.append({
+            'name': release.package.name,
+            'version': release.version,
+            'timestamp': calendar.timegm(release.created.timetuple()),
+            'action': 'new release'
+        })
+
+    return XMLRPCResponse(params=(output,))
+
+
 def search(request, spec, operator='or'):
     """
     search(spec[, operator])
@@ -127,14 +142,6 @@ def search(request, spec, operator='or'):
     }
     return XMLRPCResponse(params=(output,))
 
-def changelog(since):
-    output = {
-        'name': '',
-        'version': '',
-        'timestamp': '',
-        'action': '',
-    }
-    return XMLRPCResponse(params=(output,))
 
 def ratings(request, name, version, since):
     return XMLRPCResponse(params=([],))
