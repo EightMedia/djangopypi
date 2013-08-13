@@ -51,7 +51,8 @@ def release_urls(request, package_name, version):
                 'downloads': 0,
                 'has_sig': len(dist.signature)>0,
                 'python_version': dist.pyversion,
-                'comment_text': dist.comment
+                'comment_text': dist.comment,
+                'upload_time': dist.created,
             })
     except (Package.DoesNotExist, Release.DoesNotExist):
         pass
