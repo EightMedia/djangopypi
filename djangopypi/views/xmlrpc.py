@@ -32,7 +32,10 @@ def list_packages(request):
 
 def package_releases(request, package_name, show_hidden=False):
     try:
-        return XMLRPCResponse(params=(list(Package.objects.get(name=package_name).releases.filter(hidden=show_hidden).values_list('version', flat=True)),))
+        qs = Package.objects.get(name=package_name).releases.all()
+        if not show_hidden:
+            qs = qs.filter(hidden=show_hidden)
+        return XMLRPCResponse(params=(list(qs.values_list('version', flat=True)),))
     except Package.DoesNotExist:
         return XMLRPCResponse(params=([],))
 
